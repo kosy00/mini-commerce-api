@@ -25,6 +25,7 @@ public class Product {
 
     private  int stock;
 
+    @Builder.Default
     private boolean isDeleted = false;
 
     public void delete() {

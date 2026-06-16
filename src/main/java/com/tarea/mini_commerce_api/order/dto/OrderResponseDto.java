@@ -6,14 +6,14 @@ import com.tarea.mini_commerce_api.product.dto.ProductResponseDto;
 import java.time.LocalDateTime;
 
 public record OrderResponseDto(
-        ProductResponseDto product,
+        String productName,
         int quantity,
         int totalPrice,
         LocalDateTime orderDate
 ) {
     public static OrderResponseDto from(Order order) {
         return new OrderResponseDto(
-                ProductResponseDto.from(order.getProduct()),
+                order.getProduct().getItemName(),
                 order.getQuantity(),
                 order.getTotalPrice(),
                 order.getOrderDate()
