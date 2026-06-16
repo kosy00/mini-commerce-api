@@ -1,12 +1,14 @@
 package com.tarea.mini_commerce_api.product;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
+@Table(name = "products")
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     @Id
