@@ -23,4 +23,11 @@ public class Product {
 
     private  int stock;
 
+
+    public void update(String itemName, String description, int price, int stock) {
+        this.itemName = itemName;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+    }
 }
