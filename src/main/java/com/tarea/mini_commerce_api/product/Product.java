@@ -23,6 +23,11 @@ public class Product {
 
     private  int stock;
 
+    private boolean isDeleted = false;
+
+    public void delete() {
+        this.isDeleted = true;
+    }
 
     public void update(String itemName, String description, int price, int stock) {
         this.itemName = itemName;

@@ -36,7 +36,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductResponseDto getProduct(Long productId) {
         log.info("상품 단건 조회 시작 - productId={}", productId);
-        Product product = repository.findById(productId)
+        Product product = repository.findByIdAndIsDeletedFalse(productId)
                 .orElseThrow(()-> {
                     log.warn("상품 단건 조회 실패 - 해당 상품이 존재하지 않음 - productId={}", productId);
                     return new ResponseStatusException(HttpStatus.NOT_FOUND,"상품을 찾을 수 없습니다. productId=" + productId);
@@ -48,14 +48,14 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<ProductResponseDto> getAllProducts() {
         log.info("상품 목록 조회 시작");
-        return repository.findAll().stream()
+        return repository.findAllByIsDeletedFalse().stream()
                 .map(ProductResponseDto::from)
                 .toList();
     }
 
     public ProductResponseDto updateProduct(Long productId, ProductRequestDto dto) {
         log.info("상품 수정 시작 - productId={}", productId);
-        Product product = repository.findById(productId)
+        Product product = repository.findByIdAndIsDeletedFalse(productId)
                 .orElseThrow(()-> {
                     log.warn("상품 수정 실패 - 해당 상품이 존재하지 않음 - productId={}", productId);
                     return new ResponseStatusException(HttpStatus.NOT_FOUND,"상품을 찾을 수 없습니다. productId=" + productId);
@@ -65,9 +65,13 @@ public class ProductService {
     }
 
     public void deleteProduct(Long productId) {
-        if (!repository.existsById(productId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다. productId=" + productId);
-        }
-        repository.deleteById(productId);
+        log.info("상품 삭제 시작 - productId={}", productId);
+        Product product = repository.findByIdAndIsDeletedFalse(productId)
+                .orElseThrow(() -> {
+                    log.warn("상품 삭제 실패 - 해당 상품이 존재하지 않음 - productId={}", productId);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다. productId=" + productId);
+                });
+        product.delete();
+        log.info("상품 삭제 완료 - productId={}", productId);
     }
 }
