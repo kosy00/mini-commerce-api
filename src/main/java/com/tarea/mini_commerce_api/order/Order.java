@@ -3,6 +3,7 @@ package com.tarea.mini_commerce_api.order;
 import com.tarea.mini_commerce_api.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -25,5 +26,6 @@ public class Order {
 
     private int totalPrice;
 
+    @CreationTimestamp
     private LocalDateTime orderDate;
 }
